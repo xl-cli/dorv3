@@ -61,21 +61,21 @@ def fetch_my_packages():
             "quota_code": quota_code,
         })
         
-        print("Rebuy package? Input package number to rebuy, or '00' to back.")
-        choice = input("Choice: ")
-        if choice == "00":
-            return None
-        selected_pkg = next((pkg for pkg in my_packages if str(pkg["number"]) == choice), None)
-        
-        if not selected_pkg:
-            print("Paket tidak ditemukan. Silakan masukan nomor yang benar.")
-            continue
-        
-        is_done = show_package_details(api_key, tokens, selected_pkg["quota_code"])
-        if is_done:
-            return None
-        
         num += 1
+    
+    print("Rebuy package? Input package number to rebuy, or '00' to back.")
+    choice = input("Choice: ")
+    if choice == "00":
+        return None
+    selected_pkg = next((pkg for pkg in my_packages if str(pkg["number"]) == choice), None)
+    
+    if not selected_pkg:
+        print("Paket tidak ditemukan. Silakan masukan nomor yang benar.")
+        return None
+    
+    is_done = show_package_details(api_key, tokens, selected_pkg["quota_code"])
+    if is_done:
+        return None
         
     pause()
         
