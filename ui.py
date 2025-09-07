@@ -13,7 +13,7 @@ from util import display_html
 def clear_screen():
     print("clearing screen...")
     os.system('cls' if os.name == 'nt' else 'clear')
-    ascii_art.to_terminal(columns=60)
+    ascii_art.to_terminal(columns=50)
 
 def pause():
     input("\nTekan Enter untuk lanjut...")

@@ -16,9 +16,10 @@ apt update && apt full-upgrade
 ```
 pkg install git
 ```
-3. Install Python
+3. Install Python & PIL
 ```
 pkg install python
+apt install python-pillow
 ```
 4. Clone this repo
 ```
