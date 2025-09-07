@@ -27,7 +27,7 @@ git clone https://github.com/purplemashu/me-cli
 ```
 5. Open the folder
 ```
-cd mynyak-engsel
+cd me-cli
 ```
 6. Install dependencies
 ```
