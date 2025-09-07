@@ -5,6 +5,9 @@ from crypto_helper import encryptsign_xdata, java_like_timestamp, ts_gmt7_withou
 
 BASE_API_URL = os.getenv("BASE_API_URL")
 BASE_CIAM_URL = os.getenv("BASE_CIAM_URL")
+if not BASE_API_URL or not BASE_CIAM_URL:
+    raise ValueError("BASE_API_URL or BASE_CIAM_URL environment variable not set")
+
 GET_OTP_URL = BASE_CIAM_URL + "/realms/xl-ciam/auth/otp"
 BASIC_AUTH = os.getenv("BASIC_AUTH")
 AX_DEVICE_ID = os.getenv("AX_DEVICE_ID")
