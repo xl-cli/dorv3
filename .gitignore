@@ -1,4 +1,5 @@
 env
+.env
 tokens*
 __pycache__/
 .vscode/

@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+
+load_dotenv() 
+
 import sys, requests, json
 from ui import *
 from api_request import *
@@ -18,7 +22,7 @@ def main():
             balance_expired_at = balance.get("expired_at")
 
             show_main_menu(active_user["number"], balance_remaining, balance_expired_at)
-            
+
             choice = input("Pilih menu: ")
             if choice == "1":
                 selected_user_number = show_account_menu()
