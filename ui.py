@@ -269,7 +269,7 @@ def clear_screen():
         except Exception as e:
             console.print(f"[bold red]Gagal menampilkan ASCII art:[/] {e}")
     else:
-        ascii_art.to_terminal(columns=60)
+        ascii_art.to_terminal(columns=50)
 
 
 def pause():
