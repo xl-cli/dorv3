@@ -73,7 +73,7 @@ def get_packages_by_family(family_code: str, is_enterprise: bool = False):
         for variant in package_variants:
             variant_name = variant.get("name", "Tidak diketahui")
             if RICH_OK:
-                table.add_row("", f"[{_c('text_sub')}]Variant {variant_number}: {variant_name}[/]", "")
+                table.add_row("", f"[{_c('text_sub')}]Variant {variant_number}: {variant_name}[/]". "")
             else:
                 print(f" Variant {variant_number}: {variant_name}")
             for option in variant.get("package_options", []):
