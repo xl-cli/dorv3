@@ -245,7 +245,7 @@ def _print_gradient_title(text="Dor XL by Flyxt9"):
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
     #ascii_art.to_terminal(columns=50)
-    if RICH_OK:
+if RICH_OK:
     art_lines = ascii_art.to_string().splitlines()
     art_text = Text()
     for line in art_lines:
