@@ -249,18 +249,17 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
     if RICH_OK:
         try:
-            # Coba konversi objek ascii_art ke string
-            ascii_text = str(ascii_art)
-            art_lines = ascii_text.splitlines()
+            # Tangkap output terminal dari ascii_art
+            ascii_output = ascii_art.to_terminal(columns=80, capture_output=True)
+            art_lines = ascii_output.splitlines()
             art_text = Text()
             for line in art_lines:
                 art_text.append(line + "\n", style=_c("text_body"))
             console.print(Align.center(art_text))
-        except Exception:
-            console.print("[bold red]Gagal menampilkan ASCII art[/]")
+        except Exception as e:
+            console.print(f"[bold red]Gagal menampilkan ASCII art:[/] {e}")
     else:
         ascii_art.to_terminal(columns=50)
-
 
 def pause():
     if RICH_OK:
