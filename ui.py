@@ -7,10 +7,10 @@ import ascii_magic
 
 ascii_art = ascii_magic.from_url(
     "https://me.mashu.lol/mebanner.png",
-    columns=60,              # Lebar lebih kecil, cocok untuk Termux
-    char="#",                # Karakter aman
-    mode=ascii_magic.Modes.ASCII  # Pastikan pakai mode ASCII
+    columns=60,      # Lebar yang cocok untuk Termux
+    char="#"         # Karakter aman dan stabil
 )
+
 
 from datetime import datetime
 from api_request import get_otp, submit_otp, save_tokens, get_package, purchase_package, get_addons
