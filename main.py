@@ -1,7 +1,10 @@
-import sys
+from dotenv import load_dotenv
 
-from api_request import *
+load_dotenv() 
+
+import sys, requests, json
 from ui import *
+from api_request import *
 from paket_xut import get_package_xut
 from paket_mastif import get_package_mastif
 from paket_family_group import show_company_group_menu
@@ -54,7 +57,13 @@ def main():
                     continue
                 get_packages_by_family(family_code)
                 continue
-            elif choice == "7":
+            elif choice == "6":
+                family_code = input("Enter family code (or '00' to cancel): ").strip()
+                if family_code == "00":
+                    continue
+                get_packages_by_family(family_code, is_enterprise=True)
+                continue
+            elif choice == "69":
                 # Ganti Tema
                 change_theme_menu()
                 continue
