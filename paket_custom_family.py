@@ -80,7 +80,7 @@ def get_packages_by_family(family_code: str, is_enterprise: bool = False):
                 option_name = option.get("name", "Tidak diketahui")
                 option_price = option.get("price", 0)
                 option_code = option.get("package_option_code", "")
-                formatted_price = f"{int(option_price):.}"
+                formatted_price = f"{int(option_price):,}"
                 packages.append({
                     "number": option_number,
                     "name": option_name,
