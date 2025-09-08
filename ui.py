@@ -241,6 +241,7 @@ def _print_gradient_title(text="Dor XL by Flyxt9"):
 # ========= Old helpers =========
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
+    ascii_art.to_terminal(columns=50)
 
 def pause():
     if RICH_OK:
@@ -300,7 +301,8 @@ def show_main_menu(number, balance, balance_expired_at):
         menu.add_row("[bold]4[/]", "Dor Paket Masa Aktif")
         menu.add_row("[bold]5[/]", "Dor Paket Lainnya..")
         menu.add_row("[bold]6[/]", "Input Family Code Sendiri")
-        menu.add_row("[bold]7[/]", f"[{_c('text_sub')}]Ganti Tema[/]")
+        menu.add_row("[bold]7[/]", "Input Family Code (Enterprise)")
+        menu.add_row("[bold]69[/]", f"[{_c('text_sub')}]Ganti Gaya[/]")
         menu.add_row("[bold]00[/]", f"[{_c('text_err')}]Tutup aplikasi[/]")
         _print_centered_panel(menu, title=f"[{_c('text_title')}]Menu[/]", border_style=_c("border_primary"))
     else:
@@ -317,7 +319,8 @@ def show_main_menu(number, balance, balance_expired_at):
         print("4. Dor Paket Masa Aktif")
         print("5. Dor Paket Lainnya..")
         print("6. Input Family Code Sendiri")
-        print("7. Ganti Tema")
+        print("6. Input Family Code (Enterprise)")
+        print("69. Ganti Tema")
         print("00. Tutup aplikasi")
         print("--------------------------")
 
