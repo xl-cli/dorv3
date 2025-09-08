@@ -266,7 +266,7 @@ def show_banner():
                 (" ✦", _c("text_key"))
             )),
             title=f"[{_c('text_title')}]SELAMAT DATANG[/]",
-            subtitle="[dim]mod by @barbex_id[/]",
+            subtitle="[dim]Mod by @barbex_id[/]",
             border_style=_c("border_primary"),
             box=DOUBLE,
             padding=(1, 2)
