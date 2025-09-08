@@ -57,7 +57,7 @@ def main():
                     continue
                 get_packages_by_family(family_code)
                 continue
-            elif choice == "6":
+            elif choice == "7":
                 family_code = input("Enter family code (or '00' to cancel): ").strip()
                 if family_code == "00":
                     continue
