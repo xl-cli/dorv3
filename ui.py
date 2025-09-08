@@ -323,7 +323,7 @@ def show_main_menu(number, balance, balance_expired_at):
         print("5. Dor Paket Lainnya..")
         print("6. Input Family Code Sendiri")
         print("6. Input Family Code (Enterprise)")
-        print("69. Ganti Tema")
+        print("69. Ganti Gaya")
         print("00. Tutup aplikasi")
         print("--------------------------")
 
