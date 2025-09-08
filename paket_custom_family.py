@@ -1,7 +1,6 @@
 import json
 from api_request import send_api_request, get_family
 from auth_helper import AuthInstance
-from api_request import get_family
 from ui import (
     clear_screen,
     show_package_details,
@@ -12,6 +11,7 @@ from ui import (
     _print_full_width_panel,
     _print_centered_panel
 )
+
 try:
     from rich.table import Table
     from rich.prompt import Prompt
@@ -71,10 +71,6 @@ def get_packages_by_family(family_code: str, is_enterprise: bool = False):
         option_number = 1
         variant_number = 1
         for variant in package_variants:
-            #variant_name = variant["name"]
-            #print(f" Variant {variant_number}: {variant_name}")
-            #for option in variant["package_options"]:
-                #option_name = option["name"]
             variant_name = variant.get("name", "Tidak diketahui")
             if RICH_OK:
                 table.add_row("", f"[{_c('text_sub')}]Variant {variant_number}: {variant_name}[/]", "")
@@ -82,20 +78,21 @@ def get_packages_by_family(family_code: str, is_enterprise: bool = False):
                 print(f" Variant {variant_number}: {variant_name}")
             for option in variant.get("package_options", []):
                 option_name = option.get("name", "Tidak diketahui")
-                option_price = option.get("price", "Tidak diketahui")
+                option_price = option.get("price", 0)
                 option_code = option.get("package_option_code", "")
+                formatted_price = f"{int(option_price):,}"  # Format ribuan pakai koma
                 packages.append({
                     "number": option_number,
                     "name": option_name,
-                    "price": option_price,
+                    "price": formatted_price,
                     "code": option_code
                 })
                 if RICH_OK:
                     table.add_row(
-                        str(option_number), option_name, f"Rp {option_price}"
+                        str(option_number), option_name, f"Rp {formatted_price}"
                     )
                 else:
-                    print(f"{option_number}. {option_name} - Rp {option_price}")
+                    print(f"{option_number}. {option_name} - Rp {formatted_price}")
                 option_number += 1
             variant_number += 1
 
