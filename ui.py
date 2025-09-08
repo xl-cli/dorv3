@@ -556,7 +556,7 @@ def show_package_menu(packages):
             table.add_column("Nama Paket", style=_c("text_body"))
             table.add_column("Harga", justify="left", style=_c("text_money"))
             for pkg in packages:
-                table.add_row(str(pkg['number']), pkg['name'], f"Rp {pkg['price']:,}")
+                table.add_row(str(pkg['number']), pkg['name'], f"Rp {pkg['price']:.}")
 
             _print_centered_panel(table, title=f"[{_c('text_title')}]Paket Tersedia[/]", border_style=_c("border_info"))
             _print_centered_panel(f"[{_c('text_sub')}]00. Kembali ke menu utama", border_style=_c("border_primary"))
