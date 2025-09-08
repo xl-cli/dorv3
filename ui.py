@@ -1,14 +1,12 @@
-import json
 import os
-import sys
+import io
+import time
+import json
+from datetime import datetime
+from contextlib import redirect_stdout
+
 import banner
 ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
-
-from datetime import datetime
-from api_request import get_otp, submit_otp, save_tokens, get_package, purchase_package, get_addons
-from purchase_api import show_multipayment, show_qris_payment, settlement_bounty
-from auth_helper import AuthInstance
-from util import display_html
 
 # ========== Rich Setup ==========
 try:
@@ -16,7 +14,7 @@ try:
     from rich.panel import Panel
     from rich.table import Table
     from rich.align import Align
-    from rich.box import ROUNDED, HEAVY, DOUBLE
+    from rich.box import ROUNDED, DOUBLE
     from rich.text import Text
     from rich.rule import Rule
     from rich.prompt import Prompt
@@ -27,93 +25,21 @@ except Exception:
 
 console = Console() if RICH_OK else None
 
-# ========= Theme presets + persist =========
+# ========= Theme Setup =========
 _THEME_FILE = "theme.json"
 
 THEMES = {
     "dark_neon": {
         "border_primary": "#7C3AED",
-        "border_info": "#06B6D4",
-        "border_success": "#10B981",
-        "border_warning": "#F59E0B",
-        "border_error": "#EF4444",
-        "text_title": "bold #E5E7EB",
         "text_sub": "bold #22D3EE",
-        "text_ok": "bold #34D399",
-        "text_warn": "bold #FBBF24",
-        "text_err": "bold #F87171",
-        "text_body": "#D1D5DB",
+        "text_title": "bold #E5E7EB",
         "text_key": "#A78BFA",
-        "text_value": "bold #F3F4F6",
-        "text_money": "bold #34D399",
         "text_date": "bold #FBBF24",
-        "text_number": "#C084FC",
         "gradient_start": "#22D3EE",
         "gradient_end": "#A78BFA",
-    },
-    "default": {
-        "border_primary": "magenta",
-        "border_info": "cyan",
-        "border_success": "green",
-        "border_warning": "yellow",
-        "border_error": "red",
-        "text_title": "bold white",
-        "text_sub": "bold cyan",
-        "text_ok": "bold green",
-        "text_warn": "bold yellow",
-        "text_err": "bold red",
-        "text_body": "white",
-        "text_key": "magenta",
-        "text_value": "bold white",
-        "text_money": "bold green",
-        "text_date": "bold yellow",
-        "text_number": "magenta",
-        "gradient_start": "#8A2BE2",
-        "gradient_end": "#00FFFF",
-    },
-    "red_black": {
-        "border_primary": "#EF4444",
-        "border_info": "#F87171",
-        "border_success": "#22C55E",
-        "border_warning": "#F59E0B",
-        "border_error": "#DC2626",
-        "text_title": "bold #F3F4F6",
-        "text_sub": "bold #EF4444",
-        "text_ok": "bold #22C55E",
-        "text_warn": "bold #F59E0B",
-        "text_err": "bold #F87171",
-        "text_body": "#E5E7EB",
-        "text_key": "#F87171",
-        "text_value": "bold #F3F4F6",
-        "text_money": "bold #22C55E",
-        "text_date": "bold #FBBF24",
-        "text_number": "#EF4444",
-        "gradient_start": "#DC2626",
-        "gradient_end": "#F59E0B",
-    },
-    "emerald_glass": {
-        "border_primary": "#10B981",
-        "border_info": "#34D399",
-        "border_success": "#059669",
-        "border_warning": "#A3E635",
-        "border_error": "#EF4444",
-        "text_title": "bold #ECFDF5",
-        "text_sub": "bold #34D399",
-        "text_ok": "bold #22C55E",
-        "text_warn": "bold #A3E635",
-        "text_err": "bold #F87171",
-        "text_body": "#D1FAE5",
-        "text_key": "#6EE7B7",
-        "text_value": "bold #F0FDFA",
-        "text_money": "bold #22C55E",
-        "text_date": "bold #A3E635",
-        "text_number": "#10B981",
-        "gradient_start": "#34D399",
-        "gradient_end": "#A7F3D0",
-    },
+    }
 }
 
-# THEME aktif (load dari file jika ada)
 def _load_theme_name():
     try:
         if os.path.exists(_THEME_FILE):
@@ -133,19 +59,10 @@ def _save_theme_name(name: str):
 _theme_name = _load_theme_name()
 THEME = THEMES.get(_theme_name, THEMES["dark_neon"]).copy()
 
-def set_theme(name: str):
-    global THEME, _theme_name
-    if name in THEMES:
-        THEME = THEMES[name].copy()
-        _theme_name = name
-        _save_theme_name(name)
-        return True
-    return False
-
 def _c(key: str) -> str:
     return THEME.get(key, "white")
 
-# ========= Phone-friendly width & centered helpers =========
+# ========= Layout Helpers =========
 def _term_width(default=80):
     if not RICH_OK:
         return default
@@ -162,43 +79,7 @@ def _target_width(pct=0.9, min_w=38, max_w=None):
     tw = max(min_w, min(tw, w - 2))
     return tw
 
-def _print_centered_panel(renderable, *, title=None, border_style=None, box=ROUNDED, padding=(1,1), width=None):
-    if not RICH_OK:
-        print("--------------------------")
-        if isinstance(renderable, str):
-            print(renderable)
-        else:
-            print("[Panel disabled (rich not installed)]")
-        print("--------------------------")
-        return
-    panel = Panel(
-        renderable,
-        title=title,
-        border_style=border_style,
-        box=box,
-        padding=padding,
-        width=_term_width()
-    )
-    console.print(Align.center(panel))
-def _print_full_width_panel(renderable, *, title=None, border_style=None, box=ROUNDED, padding=(1,1)):
-    if not RICH_OK:
-        print("--------------------------")
-        if isinstance(renderable, str):
-            print(renderable)
-        else:
-            print("[Panel disabled (rich not installed)]")
-        print("--------------------------")
-        return
-    panel = Panel(
-        renderable,
-        title=title,
-        border_style=border_style,
-        box=box,
-        padding=padding,
-        width=_term_width()
-    )
-    console.print(panel)
-# --- Gradient manual (kompatibel rich lama) ---
+# ========= Gradient Tools =========
 def _hex_to_rgb(h):
     h = h.lstrip("#")
     return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
@@ -226,9 +107,25 @@ def _gradient_colors(start_hex, end_hex, n):
     except Exception:
         return [start_hex] * max(1, n)
 
+# ========= Visual Effects =========
+def loading_effect(text="Menyiapkan panel...", duration=1.5):
+    if RICH_OK:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            progress.add_task(description=text, total=None)
+            time.sleep(duration)
+
+def show_system_info():
+    now = datetime.now().strftime("%A, %d %B %Y • %H:%M WIB")
+    info = Text(f"📅 {now}", style=_c("text_date"))
+    console.print(Align.center(info))
+
 def _print_gradient_title(text="Dor XL by Flyxt9"):
     if not RICH_OK:
-        print("Dor XL by Flyxt9")
+        print(text)
         return
     try:
         s = str(text)
@@ -241,36 +138,33 @@ def _print_gradient_title(text="Dor XL by Flyxt9"):
         t = Text(str(text), style=_c("text_title"))
         console.print(Align.center(t))
 
-# ========= Old helpers =========
-import io
-from contextlib import redirect_stdout
-
-def clear_screen():
+# ========= ASCII Art Display =========
+def clear_screen(animated=False):
     os.system('cls' if os.name == 'nt' else 'clear')
     if RICH_OK:
         try:
-            import io
-            from contextlib import redirect_stdout
-
             buffer = io.StringIO()
             with redirect_stdout(buffer):
                 ascii_art.to_terminal(columns=_target_width(pct=0.8))
             ascii_output = buffer.getvalue()
             art_lines = ascii_output.splitlines()
+            warna = _c("text_sub")
 
-            art_text = Text(justify="center")
-            warna = _c("text_sub")  # Warna dari tema aktif
-
-            for line in art_lines:
-                padded_line = line.center(_term_width())
-                art_text.append(padded_line + "\n", style=warna)
-
-            console.print(art_text)
+            if animated:
+                for line in art_lines:
+                    padded_line = line.center(_term_width())
+                    console.print(Text(padded_line, style=warna))
+                    time.sleep(0.02)
+            else:
+                art_text = Text(justify="center")
+                for line in art_lines:
+                    padded_line = line.center(_term_width())
+                    art_text.append(padded_line + "\n", style=warna)
+                console.print(art_text)
         except Exception as e:
             console.print(f"[bold red]Gagal menampilkan ASCII art:[/] {e}")
     else:
         ascii_art.to_terminal(columns=50)
-
 
 def pause():
     if RICH_OK:
@@ -281,7 +175,7 @@ def pause():
 
 # ========= Banner =========
 def show_banner():
-    clear_screen()
+    clear_screen(animated=True)
     if RICH_OK:
         header = Panel.fit(
             Align.center(Text.assemble(
@@ -300,9 +194,10 @@ def show_banner():
         console.print(Align.center(header))
         _print_gradient_title("Tembak Paket Internet Murah")
         console.print(Align.center(Rule(style=_c("border_primary"))))
+        show_system_info()
     else:
         print("--------------------------")
-        print("")
+        print("Panel Dor Paket v0.3 by Flyxt9")
         print("--------------------------")
 
 # ========= Main Menu =========
