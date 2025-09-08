@@ -12,12 +12,10 @@ ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
 try:
     from rich.console import Console
     from rich.panel import Panel
-    from rich.table import Table
     from rich.align import Align
     from rich.box import ROUNDED, DOUBLE
     from rich.text import Text
     from rich.rule import Rule
-    from rich.prompt import Prompt
     from rich.progress import Progress, SpinnerColumn, TextColumn
     RICH_OK = True
 except Exception:
@@ -173,6 +171,39 @@ def pause():
     else:
         input("\nTekan Enter untuk lanjut...")
 
+# ========= Panel Helpers =========
+def _print_centered_panel(renderable, *, title=None, border_style=None, box=ROUNDED, padding=(1,1), width=None):
+    if not RICH_OK:
+        print("--------------------------")
+        print(renderable if isinstance(renderable, str) else "[Panel disabled]")
+        print("--------------------------")
+        return
+    panel = Panel(
+        renderable,
+        title=title,
+        border_style=border_style,
+        box=box,
+        padding=padding,
+        width=_term_width()
+    )
+    console.print(Align.center(panel))
+
+def _print_full_width_panel(renderable, *, title=None, border_style=None, box=ROUNDED, padding=(1,1)):
+    if not RICH_OK:
+        print("--------------------------")
+        print(renderable if isinstance(renderable, str) else "[Panel disabled]")
+        print("--------------------------")
+        return
+    panel = Panel(
+        renderable,
+        title=title,
+        border_style=border_style,
+        box=box,
+        padding=padding,
+        width=_term_width()
+    )
+    console.print(panel)
+
 # ========= Banner =========
 def show_banner():
     clear_screen(animated=True)
@@ -199,6 +230,7 @@ def show_banner():
         print("--------------------------")
         print("Panel Dor Paket v0.3 by Flyxt9")
         print("--------------------------")
+
 
 # ========= Main Menu =========
 def show_main_menu(number, balance, balance_expired_at):
@@ -656,3 +688,10 @@ def show_package_details(api_key, tokens, package_option_code):
         return False
     pause()
     sys.exit(0)
+__all__ = [
+    "clear_screen",
+    "pause",
+    "show_banner",
+    "_print_full_width_panel",
+    ...
+]
