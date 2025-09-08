@@ -10,7 +10,7 @@ Chat telegram bot [@fykxt_bot](https://t.me/fykxt_bot) with message `/viewkey`. 
 # How to run with TERMUX
 1. Update & Upgrade Termux
 ```
-apt update && apt full-upgrade
+apt update && apt full-upgrade -y
 ```
 2. Install Git
 ```
@@ -23,15 +23,15 @@ apt install python-pillow
 ```
 4. Clone this repo
 ```
-git clone https://github.com/purplemashu/me-cli
+git clone https://github.com/xl-cli/dorv3
 ```
 5. Open the folder
 ```
-cd me-cli
+cd dorv3
 ```
 6. Install dependencies
 ```
-pip install -r requirements.txt
+pip install -r requirements.txt && pip install --upgrade rich
 ```
 7. Run the script
 ```
