@@ -2,7 +2,8 @@ import json
 import os
 import sys
 import banner
-ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
+#ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
+ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals(), char="#")
 
 from datetime import datetime
 from api_request import get_otp, submit_otp, save_tokens, get_package, purchase_package, get_addons
