@@ -3,7 +3,7 @@ from api_request import send_api_request, get_family
 from auth_helper import AuthInstance
 from ui import clear_screen, pause, show_package_details
 
-def get_packages_by_family(family_code: str):
+def get_packages_by_family(family_code: str, is_enterprise: bool = False):
     api_key = AuthInstance.api_key
     tokens = AuthInstance.get_active_tokens()
     if not tokens:
@@ -13,11 +13,10 @@ def get_packages_by_family(family_code: str):
     
     packages = []
     
-    data = get_family(api_key, tokens, family_code)
+    data = get_family(api_key, tokens, family_code, is_enterprise)
     if not data:
         print("Failed to load family data.")
-        return None
-    
+        return None    
     
     in_package_menu = True
     while in_package_menu:

@@ -41,6 +41,7 @@ def show_main_menu(number, balance, balance_expired_at):
     print("2. Lihat Paket Saya")
     print("3. Beli Paket XUT")
     print("4. Beli Paket Berdasarkan Family Code")
+    print("5. Beli Paket Berdasarkan Family Code (Enterprise)")
     print("99. Tutup aplikasi")
     print("--------------------------")
         

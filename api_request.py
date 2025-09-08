@@ -255,7 +255,7 @@ def get_balance(api_key: str, id_token: str) -> dict:
         print("Error getting balance:", res.get("error", "Unknown error"))
         return None
     
-def get_family(api_key: str, tokens: dict, family_code: str) -> dict:
+def get_family(api_key: str, tokens: dict, family_code: str, is_enterprise: bool = False) -> dict:
     print("Fetching package family...")
     path = "api/v8/xl-stores/options/list"
     id_token = tokens.get("id_token")
@@ -266,7 +266,7 @@ def get_family(api_key: str, tokens: dict, family_code: str) -> dict:
         "migration_type": "NONE",
         "package_family_code": family_code,
         "is_autobuy": False,
-        "is_enterprise": False,
+        "is_enterprise": is_enterprise,
         "is_pdlp": True,
         "referral_code": "",
         "is_migration": False,
