@@ -262,11 +262,11 @@ def show_banner():
                 ("✦ ", _c("text_key")),
                 ("Panel Dor Paket ©2025", _c("text_title")),
                 (" by ", "dim"),
-                ("Barbex_ID", _c("text_sub")),
+                ("Flyxt9", _c("text_sub")),
                 (" ✦", _c("text_key"))
             )),
             title=f"[{_c('text_title')}]SELAMAT DATANG[/]",
-            subtitle="[dim]Powered by dratx1[/]",
+            subtitle="[dim]mod by @barbex_id[/]",
             border_style=_c("border_primary"),
             box=DOUBLE,
             padding=(1, 2)
