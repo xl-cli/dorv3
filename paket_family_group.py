@@ -191,7 +191,7 @@ def show_packages_by_family(api_key: str, tokens: dict, family_code: str, perusa
                 })
 
                 try:
-                    formatted_price = f"Rp {int(option_price):,}"
+                    formatted_price = f"Rp {int(option_price):.}"
                 except (ValueError, TypeError):
                     formatted_price = f"Rp {option_price}"
 
