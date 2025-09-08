@@ -3,8 +3,6 @@ import os
 import sys
 import banner
 #ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
-import ascii_magic
-
 ascii_art = ascii_magic.from_url("https://me.mashu.lol/mebanner.png")
 ascii_text = ascii_art.to_string(columns=80)
 
