@@ -11,7 +11,13 @@ from paket_family_group import show_company_group_menu
 from my_package import fetch_my_packages
 from paket_custom_family import get_packages_by_family
 from auth_helper import AuthInstance
+#
+from ui import loading_effect, show_banner, pause
 
+loading_effect()
+show_banner()
+pause()
+#
 show_menu = True
 
 def main():
