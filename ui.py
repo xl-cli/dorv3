@@ -291,7 +291,7 @@ def show_main_menu(number, balance, balance_expired_at):
         info.add_column(justify="right", style=_c("text_sub"))
         info.add_column(style=_c("text_body"))
         info.add_row("Nomor Anda", f"[{_c('text_value')}]{phone_number}[/]")
-        info.add_row("Sisa Pulsa", f"[{_c('text_money')}]Rp {remaining_balance:,}[/]")
+        info.add_row("Sisa Pulsa", f"[{_c('text_money')}]Rp {remaining_balance:.}[/]")
         info.add_row("Masa Aktif", f"[{_c('text_date')}]{expired_at_dt}[/]")
         _print_centered_panel(info, title=f"[{_c('text_title')}]Informasi Akun[/]", border_style=_c("border_info"))
 
@@ -556,7 +556,7 @@ def show_package_menu(packages):
             table.add_column("Nama Paket", style=_c("text_body"))
             table.add_column("Harga", justify="left", style=_c("text_money"))
             for pkg in packages:
-                table.add_row(str(pkg['number']), pkg['name'], f"Rp {pkg['price']:,}")
+                table.add_row(str(pkg['number']), pkg['name'], f"Rp {pkg['price']:.}")
 
             _print_centered_panel(table, title=f"[{_c('text_title')}]Paket Tersedia[/]", border_style=_c("border_info"))
             _print_centered_panel(f"[{_c('text_sub')}]00. Kembali ke menu utama", border_style=_c("border_primary"))
@@ -622,7 +622,7 @@ def show_package_details(api_key, tokens, package_option_code):
         info.add_column(justify="right", style=_c("text_sub"))
         info.add_column(style=_c("text_body"))
         info.add_row("Nama Paket", f"[{_c('text_value')}]{title}[/]")
-        info.add_row("Harga", f"[{_c('text_money')}]Rp {price:,}[/]")
+        info.add_row("Harga", f"[{_c('text_money')}]Rp {price:.}[/]")
         info.add_row("Masa Aktif", f"[{_c('text_value')}]{validity}[/]")
 
         _print_centered_panel(info, title=f"[{_c('text_title')}]Detail Paket[/]", border_style=_c("border_info"))
