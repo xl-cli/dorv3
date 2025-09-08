@@ -2,15 +2,7 @@ import json
 import os
 import sys
 import banner
-#ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
-import ascii_magic
-
-ascii_art = ascii_magic.from_url(
-    "https://me.mashu.lol/mebanner.png",
-    columns=60,      # Lebar yang cocok untuk Termux
-    char="#"         # Karakter aman dan stabil
-)
-
+ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
 
 from datetime import datetime
 from api_request import get_otp, submit_otp, save_tokens, get_package, purchase_package, get_addons
