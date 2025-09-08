@@ -206,7 +206,7 @@ def _hex_to_rgb(h):
 def _rgb_to_hex(rgb):
     return "#{:02X}{:02X}{:02X}".format(*rgb)
 
-def _lerp(a, b, t):
+def _le(a, b, t):
     return int(a + (b - a) * t)
 
 def _gradient_colors(start_hex, end_hex, n):
@@ -218,9 +218,9 @@ def _gradient_colors(start_hex, end_hex, n):
         colors = []
         for i in range(n):
             t = i / (n - 1)
-            r = _lerp(r1, r2, t)
-            g = _lerp(g1, g2, t)
-            b = _lerp(b1, b2, t)
+            r = _le(r1, r2, t)
+            g = _le(g1, g2, t)
+            b = _le(b1, b2, t)
             colors.append(_rgb_to_hex((r,g,b)))
         return colors
     except Exception:
@@ -291,7 +291,7 @@ def show_main_menu(number, balance, balance_expired_at):
         info.add_column(justify="right", style=_c("text_sub"))
         info.add_column(style=_c("text_body"))
         info.add_row("Nomor Anda", f"[{_c('text_value')}]{phone_number}[/]")
-        info.add_row("Sisa Pulsa", f"[{_c('text_money')}]Rp {remaining_balance:,}[/]")
+        info.add_row("Sisa Pulsa", f"[{_c('text_money')}]Rp {remaining_balance:.}[/]")
         info.add_row("Masa Aktif", f"[{_c('text_date')}]{expired_at_dt}[/]")
         _print_centered_panel(info, title=f"[{_c('text_title')}]Informasi Akun[/]", border_style=_c("border_info"))
 
@@ -556,7 +556,7 @@ def show_package_menu(packages):
             table.add_column("Nama Paket", style=_c("text_body"))
             table.add_column("Harga", justify="left", style=_c("text_money"))
             for pkg in packages:
-                table.add_row(str(pkg['number']), pkg['name'], f"Rp {pkg['price']:.}")
+                table.add_row(str(pkg['number']), pkg['name'], f"Rp {pkg['price']:,}")
 
             _print_centered_panel(table, title=f"[{_c('text_title')}]Paket Tersedia[/]", border_style=_c("border_info"))
             _print_centered_panel(f"[{_c('text_sub')}]00. Kembali ke menu utama", border_style=_c("border_primary"))
