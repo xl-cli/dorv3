@@ -245,24 +245,20 @@ def _print_gradient_title(text="Dor XL by Flyxt9"):
 import io
 from contextlib import redirect_stdout
 
-def clear_screen():
+def show_ascii_centered():
     os.system('cls' if os.name == 'nt' else 'clear')
     if RICH_OK:
         try:
-            import io
-            from contextlib import redirect_stdout
-
             buffer = io.StringIO()
             with redirect_stdout(buffer):
-                ascii_art.to_terminal(columns=_target_width(pct=0.8))  # Lebar lebih fleksibel
+                ascii_art.to_terminal(columns=_target_width(pct=0.6))  # Lebar lebih kecil untuk Termux
             ascii_output = buffer.getvalue()
             art_lines = ascii_output.splitlines()
 
             art_text = Text(justify="center")
-            warna = _c("text_sub")  # Warna dari tema aktif
+            warna = _c("text_sub")
 
             for line in art_lines:
-                # Tambahkan padding agar lebih center
                 padded_line = line.center(_term_width())
                 art_text.append(padded_line + "\n", style=warna)
 
@@ -271,6 +267,7 @@ def clear_screen():
             console.print(f"[bold red]Gagal menampilkan ASCII art:[/] {e}")
     else:
         ascii_art.to_terminal(columns=50)
+
 
 
 def pause():
