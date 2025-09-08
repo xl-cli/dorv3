@@ -242,13 +242,10 @@ def _print_gradient_title(text="Dor XL by Flyxt9"):
         console.print(Align.center(t))
 
 # ========= Old helpers =========
-#def clear_screen():
-    #os.system('cls' if os.name == 'nt' else 'clear')
-    #ascii_art.to_terminal(columns=50)
 import io
 from contextlib import redirect_stdout
 
-def clear_screen():
+def show_ascii_gradient_animated():
     os.system('cls' if os.name == 'nt' else 'clear')
     if RICH_OK:
         try:
@@ -261,20 +258,16 @@ def clear_screen():
             ascii_output = buffer.getvalue()
             art_lines = ascii_output.splitlines()
 
-            art_text = Text(justify="center")
-            warna = _c("text_sub")  # Ganti dengan warna dari tema kamu
+            colors = _gradient_colors(_c("gradient_start"), _c("gradient_end"), len(art_lines))
 
-            for line in art_lines:
-                art_text.append(line + "\n", style=warna)
-
-            console.print(Align.center(art_text))
+            for i, line in enumerate(art_lines):
+                styled_line = Text(line, style=colors[i])
+                console.print(Align.center(styled_line))
+                time.sleep(0.02)  # jeda 20ms antar baris
         except Exception as e:
-            console.print(f"[bold red]Gagal menampilkan ASCII art:[/] {e}")
+            console.print(f"[bold red]Gagal menampilkan animasi gradasi:[/] {e}")
     else:
         ascii_art.to_terminal(columns=50)
-
-
-
 
 def pause():
     if RICH_OK:
