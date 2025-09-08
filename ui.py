@@ -692,6 +692,13 @@ __all__ = [
     "clear_screen",
     "pause",
     "show_banner",
+    "loading_effect",
+    "show_system_info",
     "_print_full_width_panel",
-    ...
+    "_print_centered_panel",
+    "_term_width",
+    "_target_width",
+    "_gradient_colors",
+    "_print_gradient_title",
+    "_c",
 ]
