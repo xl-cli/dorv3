@@ -19,7 +19,7 @@ try:
 except ImportError:
     pass
 
-def get_packages_by_family(family_code: str):
+def get_packages_by_family(family_code: str, is_enterprise: bool = False):
     api_key = AuthInstance.api_key
     tokens = AuthInstance.get_active_tokens()
     if not tokens:
