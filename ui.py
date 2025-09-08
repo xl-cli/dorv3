@@ -2,7 +2,11 @@ import json
 import os
 import sys
 import banner
-ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
+#ascii_art = banner.load("https://me.mashu.lol/mebanner.png", globals())
+import ascii_magic
+
+ascii_art = ascii_magic.from_url("https://me.mashu.lol/mebanner.png")
+ascii_text = ascii_magic.to_ascii(ascii_art, columns=80)
 
 from datetime import datetime
 from api_request import get_otp, submit_otp, save_tokens, get_package, purchase_package, get_addons
@@ -249,9 +253,9 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
     if RICH_OK:
         try:
-            # Tangkap output terminal dari ascii_art
-            ascii_output = ascii_art.to_terminal(columns=80, capture_output=True)
-            art_lines = ascii_output.splitlines()
+            import ascii_magic
+            ascii_text = ascii_magic.to_ascii(ascii_art, columns=80)
+            art_lines = ascii_text.splitlines()
             art_text = Text()
             for line in art_lines:
                 art_text.append(line + "\n", style=_c("text_body"))
@@ -260,6 +264,7 @@ def clear_screen():
             console.print(f"[bold red]Gagal menampilkan ASCII art:[/] {e}")
     else:
         ascii_art.to_terminal(columns=50)
+
 
 def pause():
     if RICH_OK:
