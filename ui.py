@@ -260,7 +260,7 @@ def show_banner():
         header = Panel.fit(
             Align.center(Text.assemble(
                 ("✦ ", _c("text_key")),
-                ("Panel Dor Paket ©2025", _c("text_title")),
+                ("Panel Dor Paket v0.3 ©2025", _c("text_title")),
                 (" by ", "dim"),
                 ("Flyxt9", _c("text_sub")),
                 (" ✦", _c("text_key"))
