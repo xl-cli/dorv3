@@ -1,7 +1,9 @@
 import os, hmac, hashlib, requests, brotli, zlib, base64
+from random import randint
 from datetime import datetime, timezone, timedelta
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
+from dataclasses import dataclass
 
 API_KEY = os.getenv("API_KEY")
 
@@ -13,6 +15,59 @@ AX_SIGN_URL = "https://crypto.mashu.lol/api/sign-ax"
 
 AES_KEY_ASCII = os.getenv("AES_KEY_ASCII")
 BLOCK = AES.block_size
+
+AX_FP_KEY = os.getenv("AX_FP_KEY")
+
+@dataclass
+class DeviceInfo:
+    manufacturer: str
+    model: str
+    lang: str
+    resolution: str       # "WxH"
+    tz_short: str         # contoh log kamu: "GMT07:00" (tanpa tanda +)
+    ip: str
+    font_scale: float     # 1.0 dsb
+    android_release: str  # "13"
+    msisdn: str
+    
+def build_fingerprint_plain(dev: DeviceInfo) -> str:
+    return (
+        f"{dev.manufacturer}|{dev.model}|{dev.lang}|{dev.resolution}|"
+        f"{dev.tz_short}|{dev.ip}|{dev.font_scale}|Android {dev.android_release}|{dev.msisdn}"
+    )
+
+def ax_fingerprint(dev: DeviceInfo, secret_key_32hex_ascii: str) -> str:
+    key = secret_key_32hex_ascii.encode("ascii")
+    iv  = b"\x00" * 16
+    pt  = build_fingerprint_plain(dev).encode("utf-8")
+    ct  = AES.new(key, AES.MODE_CBC, iv).encrypt(pad(pt, 16))
+    return base64.b64encode(ct).decode("ascii")
+
+def load_ax_fp() -> str:
+    fp_path = "ax.fp"
+    if os.path.exists(fp_path):
+        with open(fp_path, "r", encoding="utf-8") as f:
+            content = f.read().strip()
+            if content:
+                return content
+    
+    # Generate new if not found/empty
+    dev = DeviceInfo(
+        manufacturer="samsung",
+        model="SM-N93" + str(randint(1000, 9999)),  # biar beda2
+        lang="en",
+        resolution="720x1540",
+        tz_short="GMT07:00",
+        ip="192.168.0.55",
+        font_scale=1.0,
+        android_release="13",
+        msisdn="6287863683554",
+    )
+    new_fp = ax_fingerprint(dev, AX_FP_KEY)
+    with open(fp_path, "w", encoding="utf-8") as f:
+        f.write(new_fp)
+    return new_fp
+    
 
 def random_iv_hex16() -> str:
     return os.urandom(8).hex()

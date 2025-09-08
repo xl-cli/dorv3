@@ -105,8 +105,10 @@ class Auth:
         with open("refresh-tokens.json", "w", encoding="utf-8") as f:
             json.dump(self.refresh_tokens, f, indent=2)
             
-        # Refresh user tokens
-        # self.load_tokens()
+        
+            
+        # Set active user to newly added
+        self.set_active_user(number)
             
     def remove_refresh_token(self, number: int):
         self.refresh_tokens = [rt for rt in self.refresh_tokens if rt["number"] != number]
