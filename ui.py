@@ -254,21 +254,24 @@ def clear_screen():
 
             buffer = io.StringIO()
             with redirect_stdout(buffer):
-                ascii_art.to_terminal(columns=_term_width())
+                ascii_art.to_terminal(columns=_target_width(pct=0.8))  # Lebar lebih fleksibel
             ascii_output = buffer.getvalue()
             art_lines = ascii_output.splitlines()
 
             art_text = Text(justify="center")
-            warna = _c("text_sub")  # Ganti dengan warna dari tema kamu
+            warna = _c("text_sub")  # Warna dari tema aktif
 
             for line in art_lines:
-                art_text.append(line + "\n", style=warna)
+                # Tambahkan padding agar lebih center
+                padded_line = line.center(_term_width())
+                art_text.append(padded_line + "\n", style=warna)
 
-            console.print(Align.center(art_text))
+            console.print(art_text)
         except Exception as e:
             console.print(f"[bold red]Gagal menampilkan ASCII art:[/] {e}")
     else:
         ascii_art.to_terminal(columns=50)
+
 
 def pause():
     if RICH_OK:
