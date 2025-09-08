@@ -622,7 +622,7 @@ def show_package_details(api_key, tokens, package_option_code):
         info.add_column(justify="right", style=_c("text_sub"))
         info.add_column(style=_c("text_body"))
         info.add_row("Nama Paket", f"[{_c('text_value')}]{title}[/]")
-        info.add_row("Harga", f"[{_c('text_money')}]Rp {price:.}[/]")
+        info.add_row("Harga", f"[{_c('text_money')}]Rp {price:,}[/]")
         info.add_row("Masa Aktif", f"[{_c('text_value')}]{validity}[/]")
 
         _print_centered_panel(info, title=f"[{_c('text_title')}]Detail Paket[/]", border_style=_c("border_info"))
