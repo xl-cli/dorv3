@@ -32,7 +32,7 @@ def get_packages_by_family(family_code: str):
         
     packages = []
     
-    data = get_family(api_key, tokens, family_code)
+    data = get_family(api_key, tokens, family_code, is_enterprise)
     if not data:
         if RICH_OK:
             console.print(f"[{_c('text_err')}]Failed to load family data.[/]")
@@ -71,6 +71,10 @@ def get_packages_by_family(family_code: str):
         option_number = 1
         variant_number = 1
         for variant in package_variants:
+            #variant_name = variant["name"]
+            #print(f" Variant {variant_number}: {variant_name}")
+            #for option in variant["package_options"]:
+                #option_name = option["name"]
             variant_name = variant.get("name", "Tidak diketahui")
             if RICH_OK:
                 table.add_row("", f"[{_c('text_sub')}]Variant {variant_number}: {variant_name}[/]", "")
