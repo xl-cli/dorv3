@@ -242,17 +242,25 @@ def _print_gradient_title(text="Dor XL by Flyxt9"):
         console.print(Align.center(t))
 
 # ========= Old helpers =========
+#def clear_screen():
+    #os.system('cls' if os.name == 'nt' else 'clear')
+    #ascii_art.to_terminal(columns=50)
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
-    #ascii_art.to_terminal(columns=50)
-if RICH_OK:
-    art_lines = ascii_art.to_string().splitlines()
-    art_text = Text()
-    for line in art_lines:
-        art_text.append(line + "\n", style=_c("text_body"))
-    console.print(Align.center(art_text))
-else:
-    ascii_art.to_terminal(columns=50)
+    if RICH_OK:
+        try:
+            # Coba konversi objek ascii_art ke string
+            ascii_text = str(ascii_art)
+            art_lines = ascii_text.splitlines()
+            art_text = Text()
+            for line in art_lines:
+                art_text.append(line + "\n", style=_c("text_body"))
+            console.print(Align.center(art_text))
+        except Exception:
+            console.print("[bold red]Gagal menampilkan ASCII art[/]")
+    else:
+        ascii_art.to_terminal(columns=50)
+
 
 def pause():
     if RICH_OK:
