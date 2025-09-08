@@ -39,6 +39,10 @@ python main.py
 ```
 8. Input your API key when prompted
 
+# For updates
+```
+git pull --rebase
+```
 # Info
 
 ## PS for Certain Indonesian mobile internet service provider
